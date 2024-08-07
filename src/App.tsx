@@ -1,5 +1,5 @@
+import ListPage from 'pages/ListPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import ListPage from './pages/ListPage';
 
 const App = () => {
   return (
