@@ -6,7 +6,11 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className='max-w-500 mx-auto h-[100dvh] shadow-xl'>{children}</div>
+    <div className='bg-[#111111]'>
+      <div className='mx-auto h-[100dvh] max-w-500 bg-[#181818] shadow-2xl shadow-slate-600'>
+        {children}
+      </div>
+    </div>
   );
 };
 
