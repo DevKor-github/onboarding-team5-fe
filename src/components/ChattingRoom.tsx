@@ -1,5 +1,7 @@
 import { MovieType } from 'types/client.types';
 import Tag from './Tag';
+import ArrowRight from 'assets/icons/arrow-right.svg';
+import { Link } from 'react-router-dom';
 
 interface Props {
   movie: MovieType;
@@ -7,7 +9,10 @@ interface Props {
 
 const ChattingRoom = ({ movie }: Props) => {
   return (
-    <div className='flex h-120 w-full items-center gap-16 px-16 py-8 hover:bg-[#282828]'>
+    <Link
+      to={`/${movie.id}`}
+      className='flex h-120 w-full items-center gap-16 px-16 py-8 hover:bg-[#282828]'
+    >
       <div className='relative h-full w-80 overflow-hidden rounded-8'>
         <img src={movie.image} className='h-full w-full object-cover' />
       </div>
@@ -20,7 +25,10 @@ const ChattingRoom = ({ movie }: Props) => {
           {movie?.keyword?.map((e) => <Tag type='keyword' value={e} />)}
         </div>
       </div>
-    </div>
+      <div className='ml-auto'>
+        <img src={ArrowRight} />
+      </div>
+    </Link>
   );
 };
 
