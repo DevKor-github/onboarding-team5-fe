@@ -15,3 +15,8 @@ export interface ProfileType {
   profileImage?: string;
   genre?: string[];
 }
+
+export interface ChatType {
+  user: { id: number; nickname: string; profileImage?: string };
+  value: string;
+}
