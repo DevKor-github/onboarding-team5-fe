@@ -17,12 +17,12 @@ const ChattingRoom = ({ movie }: Props) => {
         <img src={movie.image} className='h-full w-full object-cover' />
       </div>
       <div className='flex flex-col gap-4'>
-        <div className='text-18 font-500 text-white'>{movie.title}</div>
+        <div className='text-18 font-500'>{movie.title}</div>
         <div className='flex gap-4'>
           {movie.genre.map((e) => (
-            <Tag type='genre' value={e} />
+            <Tag key={e} type='genre' value={e} />
           ))}
-          {movie?.keyword?.map((e) => <Tag type='keyword' value={e} />)}
+          {movie?.keyword?.map((e) => <Tag key={e} type='keyword' value={e} />)}
         </div>
       </div>
       <div className='ml-auto'>
