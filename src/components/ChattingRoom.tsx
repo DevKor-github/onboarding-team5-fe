@@ -17,7 +17,7 @@ const ChattingRoom = ({ movie }: Props) => {
         <img src={movie.image} className='h-full w-full object-cover' />
       </div>
       <div className='flex flex-col gap-4'>
-        <div className='text-18 font-500 text-white'>{movie.title}</div>
+        <div className='text-18 font-500'>{movie.title}</div>
         <div className='flex gap-4'>
           {movie.genre.map((e) => (
             <Tag type='genre' value={e} />
