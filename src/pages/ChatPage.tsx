@@ -1,3 +1,4 @@
+import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
 import { MOCK_MOVIES } from 'mock/movies';
 import { useParams } from 'react-router-dom';
@@ -10,7 +11,10 @@ const ChatPage = () => {
   return (
     <>
       <ChatHeader title={movie.title} />
-      <div>{movieId}</div>
+      <div className='relative flex h-[calc(100%-56px)] w-full flex-col'>
+        {movieId}
+        <ChatInput />
+      </div>
     </>
   );
 };
