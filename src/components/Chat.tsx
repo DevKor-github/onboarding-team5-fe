@@ -11,9 +11,11 @@ const Chat = ({ chat, hideProfile = false, isMyChat = false }: Props) => {
   return (
     <>
       {isMyChat ? (
-        <p className='ml-auto rounded-8 bg-[#414141] px-8 py-4'>{chat.value}</p>
+        <p className='ml-auto max-w-300 rounded-8 bg-[#414141] px-8 py-4'>
+          {chat.value}
+        </p>
       ) : (
-        <div className={`flex gap-12 ${hideProfile ? '' : 'mt-4'}`}>
+        <div className={`flex max-w-300 gap-12 ${hideProfile ? '' : 'mt-4'}`}>
           {hideProfile ? (
             <div className='w-32' />
           ) : (
