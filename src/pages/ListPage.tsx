@@ -9,7 +9,7 @@ const ListPage = () => {
       <ListHeader />
       <div className='flex h-[calc(100%-56px)] w-full flex-col gap-12 overflow-scroll py-8'>
         {MOCK_MOVIES.map((movie) => (
-          <ChattingRoom movie={movie} />
+          <ChattingRoom key={movie.id} movie={movie} />
         ))}
       </div>
     </>

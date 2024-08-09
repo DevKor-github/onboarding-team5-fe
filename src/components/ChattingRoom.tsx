@@ -20,9 +20,9 @@ const ChattingRoom = ({ movie }: Props) => {
         <div className='text-18 font-500'>{movie.title}</div>
         <div className='flex gap-4'>
           {movie.genre.map((e) => (
-            <Tag type='genre' value={e} />
+            <Tag key={e} type='genre' value={e} />
           ))}
-          {movie?.keyword?.map((e) => <Tag type='keyword' value={e} />)}
+          {movie?.keyword?.map((e) => <Tag key={e} type='keyword' value={e} />)}
         </div>
       </div>
       <div className='ml-auto'>
