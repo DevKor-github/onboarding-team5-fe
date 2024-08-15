@@ -1,4 +1,5 @@
 import ChattingRoom from 'components/ChattingRoom';
+import Header from 'components/headers/Header';
 import ListHeader from 'components/headers/ListHeader';
 
 import { MOCK_MOVIES } from 'mock/movies';
@@ -6,6 +7,7 @@ import { MOCK_MOVIES } from 'mock/movies';
 const ListPage = () => {
   return (
     <>
+      <Header />
       <ListHeader />
       <div className='flex h-[calc(100%-56px)] w-full flex-col gap-12 overflow-scroll py-8'>
         {MOCK_MOVIES.map((movie) => (
