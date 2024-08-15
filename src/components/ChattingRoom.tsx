@@ -10,7 +10,7 @@ const ChattingRoom = ({ value }: Props) => {
   return (
     <Link
       to={`/${value.user.id}`}
-      className='flex h-64 w-full items-center justify-between border-b border-[#1E1E1E1A] px-24'
+      className='flex h-64 w-full shrink-0 items-center justify-between border-b border-[#1E1E1E1A] px-24'
     >
       <div className='flex shrink-0 items-center gap-8'>
         <img
