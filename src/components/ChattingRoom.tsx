@@ -22,7 +22,7 @@ const ChattingRoom = ({ value }: Props) => {
       <div className='line-clamp-1 w-60 grow px-12 text-12 text-gray-500'>
         {value.lastChat}
       </div>
-      <div>{value.time}</div>
+      <div className='text-12'>{value.time}</div>
     </Link>
   );
 };
