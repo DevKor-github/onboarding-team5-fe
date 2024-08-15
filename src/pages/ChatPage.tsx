@@ -1,23 +1,26 @@
 import Chat from 'components/Chat';
 import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
-import { MOCK_CHAT } from 'mock/chat';
-import { MOCK_MOVIES } from 'mock/movies';
+import Header from 'components/headers/Header';
+import { MOCK_CHATS } from 'mock/chat';
 import { MOCK_PROFILE } from 'mock/profile';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ChatType } from 'types/client.types';
 
 const ChatPage = () => {
-  const { movieId } = useParams();
-  const movie = MOCK_MOVIES[0];
+  const { userId } = useParams();
 
-  const [chats, setChats] = useState<ChatType[]>(MOCK_CHAT);
+  const [chats, setChats] = useState<ChatType[]>(MOCK_CHATS);
 
   const handleSendChat = (value: string) => {
     const newChat: ChatType = {
-      user: { id: MOCK_PROFILE.id, nickname: MOCK_PROFILE.nickname },
+      user: {
+        id: MOCK_PROFILE.id,
+        name: MOCK_PROFILE.name,
+      },
       value,
+      time: '오전 11:00',
     };
     setChats((prev) => [...prev, newChat]);
   };
@@ -33,18 +36,19 @@ const ChatPage = () => {
 
   return (
     <>
-      <ChatHeader title={movie.title} />
-      <div className='flex h-[calc(100%-56px)] w-full flex-col'>
+      <Header />
+      <ChatHeader userId={Number(userId ?? 0)} />
+      <div className='flex h-[calc(100dvh-100px)] w-full flex-col'>
         <div
           ref={scrollRef}
-          className='flex w-full grow flex-col gap-12 overflow-y-auto p-12'
+          className='flex w-full grow flex-col gap-12 overflow-y-auto p-24'
         >
           {chats.map((chat, index) => (
             <Chat
-              key={index}
+              key={chat.time}
               chat={chat}
-              hideProfile={chats[index].user.id === chats[index - 1]?.user.id}
               isMyChat={MOCK_PROFILE.id === chat.user.id}
+              isRepeated={chat.user.id === chats[index - 1]?.user.id}
             />
           ))}
         </div>

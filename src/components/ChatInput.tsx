@@ -1,5 +1,7 @@
-import ArrowUp from 'assets/icons/arrow-up.svg';
 import { ChangeEvent, SyntheticEvent, useState } from 'react';
+import Emoji from 'assets/icons/emoji.svg';
+import Send from 'assets/icons/send.svg';
+import SendBlue from 'assets/icons/send-blue.svg';
 
 interface Props {
   handleSendChat: (value: string) => void;
@@ -23,18 +25,28 @@ const ChatInput = ({ handleSendChat }: Props) => {
   };
 
   return (
-    <form className='flex h-52 w-full shrink-0 items-center gap-8 bg-[#424242] p-8'>
-      <input
-        onChange={handleChange}
-        value={value}
-        className='h-full w-full rounded-full border border-[#3f3f3f] bg-[#505050] px-12 outline-none'
-      />
-      <button
-        onClick={handleSubmit}
-        className='flex aspect-square h-full items-center justify-center rounded-full border border-[#3f3f3f] bg-[#717171]'
-      >
-        <img src={ArrowUp} />
+    <form className='flex w-full shrink-0 gap-12 border-t border-[#E5E5EA] px-24 pb-32 pt-12'>
+      <button type='button'>
+        <img src={Emoji} alt='이모티콘 버튼' />
       </button>
+      <div className='relative w-full'>
+        <input
+          onChange={handleChange}
+          value={value}
+          placeholder='Start typing...'
+          className='h-40 w-full rounded-full bg-[#F2F2F7] py-12 pl-20 pr-52 outline-none placeholder:text-[#666668]'
+        />
+        <button
+          onClick={handleSubmit}
+          className='absolute right-20 top-1/2 -translate-y-1/2'
+        >
+          {value ? (
+            <img src={SendBlue} alt='전송 버튼' />
+          ) : (
+            <img src={Send} alt='전송 버튼' />
+          )}
+        </button>
+      </div>
     </form>
   );
 };

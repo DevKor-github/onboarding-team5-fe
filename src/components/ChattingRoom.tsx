@@ -1,33 +1,28 @@
-import { MovieType } from 'types/client.types';
-import Tag from './Tag';
-import ArrowRight from 'assets/icons/arrow-right.svg';
 import { Link } from 'react-router-dom';
+import { ChattingRoomType } from 'types/client.types';
+import DefaultProfileImage from 'assets/images/default-profile.jpg';
 
 interface Props {
-  movie: MovieType;
+  value: ChattingRoomType;
 }
 
-const ChattingRoom = ({ movie }: Props) => {
+const ChattingRoom = ({ value }: Props) => {
   return (
     <Link
-      to={`/${movie.id}`}
-      className='flex h-120 w-full items-center gap-16 px-16 py-8 hover:bg-[#282828]'
+      to={`/${value.user.id}`}
+      className='flex h-64 w-full items-center justify-between border-b border-[#1E1E1E1A] px-24'
     >
-      <div className='relative h-full w-80 overflow-hidden rounded-8'>
-        <img src={movie.image} className='h-full w-full object-cover' />
+      <div className='flex shrink-0 items-center gap-8'>
+        <img
+          src={value.user.profileImage ?? DefaultProfileImage}
+          className='h-32 w-32 rounded-full object-cover'
+        />
+        <span>{value.user.name}</span>
       </div>
-      <div className='flex flex-col gap-4'>
-        <div className='text-18 font-500'>{movie.title}</div>
-        <div className='flex gap-4'>
-          {movie.genre.map((e) => (
-            <Tag key={e} type='genre' value={e} />
-          ))}
-          {movie?.keyword?.map((e) => <Tag key={e} type='keyword' value={e} />)}
-        </div>
+      <div className='line-clamp-1 w-60 grow px-12 text-12 text-gray-500'>
+        {value.lastChat}
       </div>
-      <div className='ml-auto'>
-        <img src={ArrowRight} />
-      </div>
+      <div className='text-12'>{value.time}</div>
     </Link>
   );
 };

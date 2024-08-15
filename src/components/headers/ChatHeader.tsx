@@ -1,19 +1,25 @@
-import ArrowLeft from 'assets/icons/arrow-left.svg';
-import { Link } from 'react-router-dom';
+import Kebab from 'assets/icons/kebab.svg';
+import DefaultProfileImage from 'assets/images/default-profile.jpg';
+import { MOCK_PROFILE } from 'mock/profile';
 
 interface Props {
-  title: string;
+  userId: number;
 }
 
-const ChatHeader = ({ title }: Props) => {
+const ChatHeader = ({ userId }: Props) => {
   return (
-    <header className='flex h-56 items-center justify-between border-b border-gray-700 bg-[#181818] px-12'>
-      <Link to='/'>
-        <img src={ArrowLeft} />
-      </Link>
-      <h1 className='text-20 font-600'>{title}</h1>
-      <div />
-    </header>
+    <div className='flex h-60 w-full shrink-0 items-center justify-between border-b border-[#1E1E1E1A] px-24'>
+      <div className='flex shrink-0 items-center gap-8'>
+        <img
+          src={DefaultProfileImage}
+          className='h-32 w-32 rounded-full object-cover'
+        />
+        <span>임건우</span>
+      </div>
+      <button>
+        <img src={Kebab} />
+      </button>
+    </div>
   );
 };
 
