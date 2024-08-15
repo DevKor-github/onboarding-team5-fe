@@ -8,6 +8,6 @@
   }
 
   body {
-    @apply text-14 font-400 text-white;
+    @apply text-14 font-400;
   }
 }

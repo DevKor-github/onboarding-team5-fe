@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ListHeader = () => {
   return (
-    <header className='flex h-56 items-center justify-between border-b border-gray-700 bg-[#181818] px-20'>
+    <header className='flex h-56 items-center justify-between border-b border-gray-100 px-20'>
       <Link to='/' className='text-20 font-600'>
         MOVIE
       </Link>

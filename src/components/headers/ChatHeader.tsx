@@ -7,7 +7,7 @@ interface Props {
 
 const ChatHeader = ({ title }: Props) => {
   return (
-    <header className='flex h-56 items-center justify-between border-b border-gray-700 bg-[#181818] px-12'>
+    <header className='flex h-56 items-center justify-between border-b border-gray-700 px-12'>
       <Link to='/'>
         <img src={ArrowLeft} />
       </Link>
