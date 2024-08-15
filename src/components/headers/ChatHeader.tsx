@@ -11,10 +11,10 @@ const ChatHeader = ({ userId }: Props) => {
     <div className='flex h-60 w-full items-center justify-between border-b border-[#1E1E1E1A] px-24'>
       <div className='flex shrink-0 items-center gap-8'>
         <img
-          src={MOCK_PROFILE.profileImage ?? DefaultProfileImage}
+          src={DefaultProfileImage}
           className='h-32 w-32 rounded-full object-cover'
         />
-        <span>{MOCK_PROFILE.name}</span>
+        <span>임건우</span>
       </div>
       <button>
         <img src={Kebab} />

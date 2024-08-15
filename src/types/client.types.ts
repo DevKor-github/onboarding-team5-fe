@@ -19,6 +19,7 @@ export interface ChattingRoomType {
 }
 
 export interface ChatType {
-  user: { id: number; nickname: string; profileImage?: string };
+  user: UserType;
   value: string;
+  time: string;
 }

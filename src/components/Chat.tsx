@@ -1,38 +1,32 @@
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
 import { ChatType } from 'types/client.types';
+import BubbleTip from 'assets/icons/bubble-tip.svg';
+import MyBubbleTip from 'assets/icons/my-bubble-tip.svg';
 
 interface Props {
   chat: ChatType;
-  hideProfile?: boolean;
-  isMyChat?: boolean;
+  isMyChat: boolean;
+  isRepeated: boolean;
 }
 
-const Chat = ({ chat, hideProfile = false, isMyChat = false }: Props) => {
+const Chat = ({ chat, isMyChat, isRepeated }: Props) => {
   return (
     <>
       {isMyChat ? (
-        <p className='ml-auto max-w-300 rounded-8 bg-[#414141] px-8 py-4'>
-          {chat.value}
-        </p>
+        <MyBubble chat={chat} isRepeated={isRepeated} />
       ) : (
-        <div className={`flex max-w-300 gap-12 ${hideProfile ? '' : 'mt-4'}`}>
-          {hideProfile ? (
+        <div className='flex w-full gap-20'>
+          {isRepeated ? (
             <div className='w-32' />
           ) : (
-            <button className='relative h-32 w-32 overflow-hidden rounded-12'>
+            <button className='h-32 w-32 overflow-hidden rounded-full'>
               <img
-                src={chat.user?.profileImage ?? DefaultProfileImage}
-                alt='프로필 이미지'
+                src={chat.user.profileImage ?? DefaultProfileImage}
                 className='h-full w-full object-cover'
               />
             </button>
           )}
-          <div>
-            {!hideProfile && (
-              <div className='text-12 text-gray-400'>{chat.user.nickname}</div>
-            )}
-            <p className='rounded-8 bg-[#414141] px-8 py-4'>{chat.value}</p>
-          </div>
+          <Bubble chat={chat} isRepeated={isRepeated} />
         </div>
       )}
     </>
@@ -40,3 +34,32 @@ const Chat = ({ chat, hideProfile = false, isMyChat = false }: Props) => {
 };
 
 export default Chat;
+
+const Bubble = ({ chat, isRepeated }: Omit<Props, 'isMyChat'>) => {
+  return (
+    <div className='relative min-w-96 max-w-256'>
+      {!isRepeated && <img src={BubbleTip} className='absolute -left-8' />}
+      <div
+        className={`flex w-full flex-col gap-4 rounded-[6px] bg-[#F2F2F7] px-8 py-4 ${isRepeated ? '' : 'rounded-tl-none'}`}
+      >
+        <div className='font-600'>{chat.user.name}</div>
+        <div>{chat.value}</div>
+        <div className='text-right text-12 text-[#666668]'>{chat.time}</div>
+      </div>
+    </div>
+  );
+};
+
+const MyBubble = ({ chat, isRepeated }: Omit<Props, 'isMyChat'>) => {
+  return (
+    <div className='relative ml-auto mr-8 min-w-96 max-w-256'>
+      {!isRepeated && <img src={MyBubbleTip} className='absolute -right-8' />}
+      <div
+        className={`flex w-full flex-col gap-4 rounded-[6px] bg-[#3189F0] px-8 py-4 text-white ${isRepeated ? '' : 'rounded-tr-none'}`}
+      >
+        <div>{chat.value}</div>
+        <div className='text-right text-12'>{chat.time}</div>
+      </div>
+    </div>
+  );
+};
