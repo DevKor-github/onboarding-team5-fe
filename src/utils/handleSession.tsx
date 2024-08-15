@@ -23,11 +23,13 @@ export const setSession = ({ accessToken, refreshToken, id }: SessionType) => {
 };
 
 export const getSession = () => {
+  const accessToken: string = cookies.get('access_token');
+  const refreshToken: string = cookies.get('refresh_token');
   const id = cookies.get('id');
   if (!id) {
     return null;
   }
-  return Number(id);
+  return { accessToken, refreshToken, id: Number(id) };
 };
 
 export const removeSession = () => {
