@@ -2,7 +2,6 @@ import Chat from 'components/Chat';
 import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
 import { MOCK_CHAT } from 'mock/chat';
-import { MOCK_MOVIES } from 'mock/movies';
 import { MOCK_PROFILE } from 'mock/profile';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { ChatType } from 'types/client.types';
 
 const ChatPage = () => {
   const { movieId } = useParams();
-  const movie = MOCK_MOVIES[0];
 
   const [chats, setChats] = useState<ChatType[]>(MOCK_CHAT);
 
@@ -33,7 +31,7 @@ const ChatPage = () => {
 
   return (
     <>
-      <ChatHeader title={movie.title} />
+      {/* <ChatHeader/> */}
       <div className='flex h-[calc(100%-56px)] w-full flex-col'>
         <div
           ref={scrollRef}
