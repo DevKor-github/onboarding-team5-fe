@@ -1,6 +1,6 @@
 import { ProfileType } from 'types/client.types';
 
-export const MOCK_PROFILE: ProfileType = {
+export const MOCK_PROFILE = {
   id: 0,
   name: '홍길동',
   email: 'gildong@gmail.com',

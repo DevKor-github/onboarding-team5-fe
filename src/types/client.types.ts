@@ -1,9 +1,11 @@
 export interface ProfileType {
-  id: number;
   name: string;
+  introduction?: string;
+  profileImagePath?: string;
+}
+
+export interface MyProfileType extends ProfileType {
   email: string;
-  introduce?: string;
-  profileImage?: string;
 }
 
 export interface UserType {
