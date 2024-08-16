@@ -1,19 +1,32 @@
+import { MyProfileType, ProfileType } from 'types/client.types';
 import { instance } from './config/default';
 
-export const postSignIn = () => {
-  const res = instance.post('/auth/login', {
-    email: 'test@gmail.com',
-    password: 'asdf1234',
-  });
-  console.log(res);
+const TEST_ACCOUNT = {
+  email: 'test@gmail.com',
+  password: 'asdf1234',
 };
 
-export const getProfile = (id: number) => {
-  const res = instance.get(`/user/user-info?id=${id}`);
-  console.log(res);
+export const signInUser = async () => {
+  const res = await instance.post('/auth/login', TEST_ACCOUNT);
+  const data: { accessToken: string; refreshToken: string; myId: number } =
+    res.data;
+  return {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+    id: data.myId,
+  };
 };
 
-export const updateProfile = () => {
-  const res = instance.patch('/user/update-profile', { name: '홍길동 2' });
-  console.log(res);
+export const getProfile = async (id: number) => {
+  const res = await instance.get(`/user/user-info?id=${id}`);
+  const data: ProfileType | MyProfileType = res.data;
+  return data;
+};
+
+export const updateProfile = async (body: {
+  introduction?: string;
+  profileImagePath?: string;
+}) => {
+  const res = await instance.patch('/user/update-profile', body);
+  return res;
 };
