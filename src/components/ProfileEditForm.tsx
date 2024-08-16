@@ -1,7 +1,7 @@
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
 import InputContainer from './InputContainer';
 import { useForm } from 'react-hook-form';
-import { getProfile } from 'services/apis';
+import { getProfile, postSignIn, updateProfile } from 'services/apis';
 
 interface ProfileEditValues {
   name: string;
@@ -14,7 +14,9 @@ const ProfileEditForm = () => {
     defaultValues: { name: '', email: '', introduce: '' },
   });
 
-  getProfile(7);
+  // getProfile(7);
+  // postSignIn();
+  // updateProfile();
 
   return (
     <form className='h-full w-full'>
