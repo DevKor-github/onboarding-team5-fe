@@ -16,7 +16,7 @@ const InputContainer = <T extends FieldValues>({
   placeholder,
   ...controls
 }: Props<T>) => {
-  const { field, fieldState } = useController({
+  const { field } = useController({
     ...controls,
   });
   return (
@@ -28,7 +28,7 @@ const InputContainer = <T extends FieldValues>({
         id={field.name}
         placeholder={placeholder}
         {...field}
-        className={`mt-8 h-40 w-full rounded-8 border border-gray-300 bg-[#fdfdfd] disabled:bg-[#e7e7e7]`}
+        className={`mt-8 h-40 w-full rounded-8 border border-gray-300 bg-[#fdfdfd] px-12 disabled:bg-[#e7e7e7]`}
       />
     </div>
   );

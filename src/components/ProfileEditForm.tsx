@@ -1,7 +1,11 @@
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
 import InputContainer from './InputContainer';
 import { useForm } from 'react-hook-form';
-import { getProfile, signInUser, updateProfile } from 'services/apis';
+import { useQuery } from '@tanstack/react-query';
+import { getProfile } from 'services/apis';
+import { getSession } from 'utils/handleSession';
+import { useEffect } from 'react';
+import { MyProfileType } from 'types/client.types';
 
 interface ProfileEditValues {
   name: string;
@@ -10,9 +14,28 @@ interface ProfileEditValues {
 }
 
 const ProfileEditForm = () => {
-  const { control } = useForm<ProfileEditValues>({
+  const session = getSession();
+
+  const { data: profile } = useQuery({
+    queryKey: ['my-profile'],
+    queryFn: () => getProfile<MyProfileType>(session?.id),
+    enabled: !!session?.id,
+  });
+
+  console.log(profile);
+
+  const { control, setValue } = useForm<ProfileEditValues>({
     defaultValues: { name: '', email: '', introduce: '' },
   });
+
+  useEffect(() => {
+    if (!profile) {
+      return;
+    }
+    setValue('name', profile.name);
+    setValue('email', profile.email);
+    setValue('introduce', profile?.introduction ?? '');
+  }, [profile]);
 
   return (
     <form className='h-full w-full'>

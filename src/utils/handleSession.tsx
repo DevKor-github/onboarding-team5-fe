@@ -33,7 +33,7 @@ export const getSession = () => {
   if (!id) {
     return null;
   }
-  return Number(id);
+  return { accessToken, refreshToken, id: Number(id) };
 };
 
 export const removeSession = () => {

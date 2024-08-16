@@ -17,9 +17,14 @@ export const signInUser = async () => {
   };
 };
 
-export const getProfile = async (id: number) => {
+export const getProfile = async <T extends ProfileType | MyProfileType>(
+  id: number | null | undefined,
+) => {
+  if (!id) {
+    return;
+  }
   const res = await instance.get(`/user/user-info?id=${id}`);
-  const data: ProfileType | MyProfileType = res.data;
+  const data: T = res.data;
   return data;
 };
 
