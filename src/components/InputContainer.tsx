@@ -16,9 +16,7 @@ const InputContainer = <T extends FieldValues>({
   placeholder,
   ...controls
 }: Props<T>) => {
-  const { field } = useController({
-    ...controls,
-  });
+  const { field } = useController(controls);
   return (
     <div className='relative'>
       <label htmlFor={field.name} className='block h-20 text-16 font-600'>
