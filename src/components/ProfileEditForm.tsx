@@ -14,11 +14,6 @@ const ProfileEditForm = () => {
     defaultValues: { name: '', email: '', introduce: '' },
   });
 
-  getProfile(1);
-
-  // updateProfile();
-  // signInUser();
-
   return (
     <form className='h-full w-full'>
       <div className='flex h-300 w-full items-center justify-center '>
