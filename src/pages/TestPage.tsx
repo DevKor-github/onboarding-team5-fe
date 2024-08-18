@@ -3,7 +3,9 @@ import Page from 'components/Page';
 const Test = () => {
   return (
     <Page>
-      <div className='w-auto bg-red-400'> weeeeeeeeeeeeeeee</div>
+      <div className='text-[120px]  pt-200 text-center text-slate-500'>
+        Test
+      </div>
       
     </Page>
   );

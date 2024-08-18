@@ -30,8 +30,8 @@ const ImageUpload = () => {
             {selectedImage ? (
               <img
                 src={selectedImage}
-                alt='Profile'
-                className='flex object-contain h-[120px] w-[100%] rounded-[10px]'
+                
+                
               />
             ) : (
               <div className='flex'>

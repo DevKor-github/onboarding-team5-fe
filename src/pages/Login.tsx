@@ -1,30 +1,62 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/Login.css';
 import Page from 'components/Page';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import axios from 'axios';
+// import { TEST_ACCOUNT } from 'mock/profile';
+
+// const TEST_ACCOUNT = {
+//   email: 'test@gmail.com',
+//   password: 'abcd1234',
+// };
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [loginResult, setLoginResult] = useState('');
 
-  const handleSignup = (event: React.FormEvent<HTMLButtonElement>) => {
+  const toSignUp = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     navigate('/sign_up');
   };
-
-  const handleLogin = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    if (username && password) {
-      console.log('로그인 성공');
-      navigate('/test'); // 로그인 성공 후 이동할 페이지로 navigate
-    } else {
-      console.log('로그인 실패');
-      // 로그인 실패 시의 처리 로직 (예: 경고 메시지 표시)
+    // if (email === TEST_ACCOUNT.email && password === TEST_ACCOUNT.password) {
+    //   // 로그인 성공 시
+    //   setLoginResult('로그인 성공!');
+    //   sessionStorage.setItem('accessToken', 'dummyAccessToken'); // 임의의 토큰 저장
+    //   sessionStorage.setItem('nickname', 'TestUser'); // 임의의 닉네임 저장
+    //   navigate('/test'); // 로그인 성공 후 페이지 이동
+    // } else {
+    //   // 로그인 실패 시
+    //   setLoginResult('로그인 실패: 이메일 또는 비밀번호가 잘못되었습니다.');
+    //   console.log('failed')
+    // }
+
+    // 로그인에 필요한 데이터
+    const formData = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      // 서버로 로그인 데이터 전송
+      const response = await axios.post('/auth/login', formData);
+      const data: { accessToken: string; refreshToken: string; myId: number } =
+        response.data;
+      return {
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        id: data.myId,
+      };
+    } catch (error) {
+      console.error('Error during login:', error);
+      setLoginResult('Login failed'); // 로그인 실패 메시지 설정
     }
   };
 
@@ -38,20 +70,31 @@ const Login = () => {
           </div>
         </div>
 
-        <div className='absolute top-[363.12px] pl-[24px] text-[18px] font-[600] text-[#2C2C2E]'>로그인</div>
+        <div className='absolute top-[363.12px] pl-[24px] text-[18px] font-[600] text-[#2C2C2E]'>
+          로그인
+        </div>
 
         <div className='absolute top-[415px]'>
           <div className='mt-10 absolute justify-center'>
             <form method='POST' className=''>
               <div className='px-[34px]'>
                 <div className='pb-[10px]'>
-                  <Input placeholder='아이디' required={true} />
+                  <Input
+                    placeholder='이메일'
+                    type='email'
+                    required={true}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
+
                 <div>
                   <Input
                     placeholder='비밀번호'
                     required={true}
                     type='password'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -68,7 +111,7 @@ const Login = () => {
                 textColor='text-[#3D3D3D]'
                 height='h-[51px]'
                 width='w-[155px]'
-                onSubmit={handleSignup}
+                onClick={toSignUp}
               />
             </div>
             <div>
@@ -77,7 +120,7 @@ const Login = () => {
                 defaultColor='bg-[#3D3D3D]'
                 height='h-[51px]'
                 width='w-[155px]'
-                onSubmit={handleLogin}
+                onClick={handleLogin}
               />
             </div>
           </div>

@@ -1,22 +1,27 @@
-export interface MovieType {
-  id: number;
-  title: string;
-  image: string;
-  genre: string[];
-  keyword?: string[];
+export interface ProfileType {
+  name: string;
+  introduction?: string;
+  profileImagePath?: string;
 }
 
-export interface ProfileType {
+export interface MyProfileType extends ProfileType {
+  email: string;
+}
+
+export interface UserType {
   id: number;
   name: string;
-  nickname: string;
-  email: string;
-  introduce?: string;
   profileImage?: string;
-  genre?: string[];
+}
+
+export interface ChattingRoomType {
+  user: UserType;
+  lastChat: string;
+  time: string;
 }
 
 export interface ChatType {
-  user: { id: number; nickname: string; profileImage?: string };
+  user: UserType;
   value: string;
+  time: string;
 }

@@ -1,6 +1,5 @@
 import usePreventScroll from 'hooks/usePreventScroll';
 import { ReactNode } from 'react';
-import Header from './header';
 
 interface Props {
   children: ReactNode;
@@ -9,14 +8,7 @@ interface Props {
 const Layout = ({ children }: Props) => {
   usePreventScroll();
   return (
-    <div className='bg-[#111111]'>
-      <div>
-      <div className='mx-auto h-[852px] w-[393px]'>
-        <Header />
-        {children}
-      </div>
-      </div>
-    </div>
+    <div className='mx-auto h-[100dvh] max-w-480 shadow-2xl'>{children}</div>
   );
 };
 

@@ -4,7 +4,7 @@ interface ButtonProps {
   textColor?: string;
   height: string;
   width: string;
-  onSubmit: (event: React.FormEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.FormEvent<HTMLButtonElement>) => void;
 }
 
 const Button = ({
@@ -13,7 +13,7 @@ const Button = ({
   textColor,
   height,
   width,
-  onSubmit,
+  onClick,
 }: ButtonProps) => {
   return (
     <div>
@@ -27,7 +27,7 @@ const Button = ({
             ${width}
             ${defaultColor} 
             `}
-        onClick={onSubmit}
+        onClick={onClick!}
       >
         {label}
       </button>
