@@ -33,7 +33,7 @@ export default {
       800: '800',
     },
     fontFamily: {
-      sans: ['Pretendard', 'Arial'],
+      sans: ['Pretendard', 'Arial', 'Montserrat'],
     },
     borderRadius: {
       none: '0px',
