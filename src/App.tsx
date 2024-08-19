@@ -13,12 +13,12 @@ const App = () => {
       <Routes>
         <Route path='/'>
           <Route index element={<ListPage />} />
-          <Route path=':movieId' element={<ChatPage />} />
+          <Route path=':userId' element={<ChatPage />} />
         </Route>
         <Route path='/profile' element={<ProfilePage />} />
-        <Route path='/login' element={<Login />}></Route>
-        <Route path='/profile_set' element={<ProfileSet />}></Route>
-        <Route path='/sign_up' element={<SignUp />}></Route>{' '}
+        <Route path='/login' element={<Login />} />
+        <Route path='/profile_set' element={<ProfileSet />} />
+        <Route path='/sign_up' element={<SignUp />} />
       </Routes>
     </Layout>
   );
