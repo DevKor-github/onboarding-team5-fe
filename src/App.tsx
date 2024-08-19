@@ -1,7 +1,10 @@
 import Layout from 'components/Layout';
 import ChatPage from 'pages/ChatPage';
 import ListPage from 'pages/ListPage';
+import Login from 'pages/Login';
 import ProfilePage from 'pages/ProfilePage';
+import ProfileSet from 'pages/ProfileSet';
+import SignUp from 'pages/SignUp';
 import { Route, Routes } from 'react-router-dom';
 
 const App = () => {
@@ -13,6 +16,9 @@ const App = () => {
           <Route path=':movieId' element={<ChatPage />} />
         </Route>
         <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='/profile_set' element={<ProfileSet />}></Route>
+        <Route path='/sign_up' element={<SignUp />}></Route>{' '}
       </Routes>
     </Layout>
   );
