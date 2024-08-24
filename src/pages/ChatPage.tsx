@@ -29,8 +29,6 @@ const ChatPage = () => {
     createChat(Number(userId));
   }, [userId, isConnected]);
 
-  console.log(messages);
-
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

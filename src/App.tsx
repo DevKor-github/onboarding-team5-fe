@@ -5,9 +5,20 @@ import Login from 'pages/Login';
 import ProfilePage from 'pages/ProfilePage';
 import ProfileSet from 'pages/ProfileSet';
 import SignUp from 'pages/SignUp';
-import { Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { getSession } from 'utils/handleSession';
 
 const App = () => {
+  const session = getSession();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (session) {
+      return;
+    }
+    navigate('/login');
+  }, [session]);
   return (
     <Layout>
       <Routes>

@@ -13,6 +13,8 @@ const ListPage = () => {
     queryKey: ['chattingRoom'],
     queryFn: getChattingRoom,
   });
+  console.log(chattingRoom, users);
+
   return (
     <>
       <Header />
