@@ -35,3 +35,9 @@ export const updateProfile = async (body: {
   const res = await instance.patch('/user/update-profile', body);
   return res;
 };
+
+export const getChatting = async () => {
+  const res = await instance.get(`/chat/list`);
+  const data = res.data;
+  return data;
+};

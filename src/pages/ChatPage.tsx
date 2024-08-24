@@ -2,10 +2,12 @@ import Chat from 'components/Chat';
 import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
 import Header from 'components/headers/Header';
+import useSocket from 'hooks/useSocket';
 import { MOCK_CHATS } from 'mock/chat';
 import { MOCK_PROFILE } from 'mock/profile';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getChatting } from 'services/apis';
 import { ChatType } from 'types/client.types';
 
 const ChatPage = () => {
@@ -43,14 +45,14 @@ const ChatPage = () => {
           ref={scrollRef}
           className='flex w-full grow flex-col gap-12 overflow-y-auto p-24'
         >
-          {chats.map((chat, index) => (
+          {/* {chats.map((chat, index) => (
             <Chat
               key={chat.time}
               chat={chat}
               isMyChat={MOCK_PROFILE.id === chat.user.id}
               isRepeated={chat.user.id === chats[index - 1]?.user.id}
             />
-          ))}
+          ))} */}
         </div>
         <ChatInput handleSendChat={handleSendChat} />
       </div>

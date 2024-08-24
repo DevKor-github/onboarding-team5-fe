@@ -1,9 +1,16 @@
 import ChattingRoom from 'components/ChattingRoom';
 import Header from 'components/headers/Header';
 import ListHeader from 'components/headers/ListHeader';
+import useSocket from 'hooks/useSocket';
 import { MOCK_CHATTING_ROOM } from 'mock/chattingRoom';
+import { getChatting } from 'services/apis';
+import { io } from 'socket.io-client';
 
 const ListPage = () => {
+  console.log(getChatting());
+
+  const { createChat, sendMessage, leaveChat } = useSocket();
+
   return (
     <>
       <Header />
@@ -13,6 +20,9 @@ const ListPage = () => {
         {MOCK_CHATTING_ROOM.map((chattingRoom) => (
           <ChattingRoom key={chattingRoom.user.id} value={chattingRoom} />
         ))}
+        <button onClick={createChat}>CREATE</button>
+        <button onClick={sendMessage}>SEND</button>
+        <button onClick={leaveChat}>LEAVE</button>
       </div>
     </>
   );
