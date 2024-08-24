@@ -1,13 +1,12 @@
 import Logo from 'assets/icons/logo.svg';
-import { Link } from 'react-router-dom';
-import { signInUser } from 'services/apis';
-import { setSession } from 'utils/handleSession';
+import { Link, useNavigate } from 'react-router-dom';
+import { removeSession } from 'utils/handleSession';
 
 const Header = () => {
-  const handleSignIn = async () => {
-    const session = await signInUser();
-    console.log(session);
-    setSession(session);
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    removeSession();
+    navigate('/login');
   };
   return (
     <header className='flex h-40 w-full shrink-0 items-center px-20'>
@@ -15,10 +14,10 @@ const Header = () => {
         <img src={Logo} alt='메인 로고' />
       </Link>
       <button
-        onClick={handleSignIn}
-        className='ml-auto rounded-4 border border-gray-600 px-4'
+        onClick={handleLogout}
+        className='ml-auto rounded-4 border border-gray-500 px-4 text-gray-500'
       >
-        로그인
+        로그아웃
       </button>
     </header>
   );

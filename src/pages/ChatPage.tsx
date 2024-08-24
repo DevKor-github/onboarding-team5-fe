@@ -1,29 +1,36 @@
+import { useQuery } from '@tanstack/react-query';
 import Chat from 'components/Chat';
 import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
 import Header from 'components/headers/Header';
-import { MOCK_CHATS } from 'mock/chat';
-import { MOCK_PROFILE } from 'mock/profile';
+import ProfileModal from 'components/modal/ProfileModal';
+import useSocket from 'hooks/useSocket';
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ChatType } from 'types/client.types';
+import { getProfile } from 'services/apis';
+import { UserType } from 'types/client.types';
+import { getSession } from 'utils/handleSession';
 
 const ChatPage = () => {
   const { userId } = useParams();
+  const { data: receiverProfile } = useQuery({
+    queryKey: ['userProfile', userId],
+    queryFn: () => getProfile<UserType>(Number(userId)),
+    enabled: !!userId,
+  });
 
-  const [chats, setChats] = useState<ChatType[]>(MOCK_CHATS);
+  const session = getSession();
 
-  const handleSendChat = (value: string) => {
-    const newChat: ChatType = {
-      user: {
-        id: MOCK_PROFILE.id,
-        name: MOCK_PROFILE.name,
-      },
-      value,
-      time: '오전 11:00',
-    };
-    setChats((prev) => [...prev, newChat]);
-  };
+  const { createChat, sendMessage, isConnected, messages } = useSocket();
+  const isCreated = useRef(false);
+
+  useEffect(() => {
+    if (!isConnected || isCreated.current) {
+      return;
+    }
+    createChat(Number(userId));
+    isCreated.current = true;
+  }, [userId, isConnected]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -32,28 +39,38 @@ const ChatPage = () => {
       return;
     }
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [scrollRef.current, chats]);
+  }, [scrollRef.current, messages]);
+
+  const [profileModal, setProfileModal] = useState(false);
 
   return (
     <>
       <Header />
-      <ChatHeader userId={Number(userId ?? 0)} />
+      <ChatHeader profile={receiverProfile} />
       <div className='flex h-[calc(100dvh-100px)] w-full flex-col'>
         <div
           ref={scrollRef}
           className='flex w-full grow flex-col gap-12 overflow-y-auto p-24'
         >
-          {chats.map((chat, index) => (
+          {messages?.map((message, index) => (
             <Chat
-              key={chat.time}
-              chat={chat}
-              isMyChat={MOCK_PROFILE.id === chat.user.id}
-              isRepeated={chat.user.id === chats[index - 1]?.user.id}
+              key={message.id}
+              message={message}
+              receiver={receiverProfile}
+              isMyChat={session?.id === message.senderId}
+              isRepeated={message.senderId === messages[index - 1]?.senderId}
+              openModal={() => setProfileModal(true)}
             />
           ))}
         </div>
-        <ChatInput handleSendChat={handleSendChat} />
+        <ChatInput handleSendChat={sendMessage} />
       </div>
+      {profileModal && (
+        <ProfileModal
+          profile={receiverProfile}
+          closeModal={() => setProfileModal(false)}
+        />
+      )}
     </>
   );
 };

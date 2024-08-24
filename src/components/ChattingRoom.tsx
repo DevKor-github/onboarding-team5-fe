@@ -1,28 +1,32 @@
 import { Link } from 'react-router-dom';
-import { ChattingRoomType } from 'types/client.types';
+import { UserType } from 'types/client.types';
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
+import { parseDate } from 'utils/parseDate';
 
 interface Props {
-  value: ChattingRoomType;
+  user?: UserType;
+  latestMessage?: string;
+  updatedAt?: string;
 }
 
-const ChattingRoom = ({ value }: Props) => {
+const ChattingRoom = ({ user, latestMessage, updatedAt }: Props) => {
+  const parsedDate = parseDate(updatedAt);
   return (
     <Link
-      to={`/${value.user.id}`}
+      to={`/${user?.id}`}
       className='flex h-64 w-full shrink-0 items-center justify-between border-b border-[#1E1E1E1A] px-24'
     >
       <div className='flex shrink-0 items-center gap-8'>
         <img
-          src={value.user.profileImage ?? DefaultProfileImage}
+          src={user?.profileImagePath ?? DefaultProfileImage}
           className='h-32 w-32 rounded-full object-cover'
         />
-        <span>{value.user.name}</span>
+        <span>{user?.name}</span>
       </div>
       <div className='line-clamp-1 w-60 grow px-12 text-12 text-gray-500'>
-        {value.lastChat}
+        {latestMessage}
       </div>
-      <div className='text-12'>{value.time}</div>
+      <div className='text-12 text-gray-500'>{parsedDate}</div>
     </Link>
   );
 };

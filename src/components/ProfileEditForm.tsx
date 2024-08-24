@@ -4,9 +4,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProfile, updateProfile } from 'services/apis';
 import { getSession } from 'utils/handleSession';
-import { useEffect } from 'react';
-import { MyProfileType } from 'types/client.types';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
+import { ProfileType } from 'types/client.types';
+import Pencil from 'assets/icons/pencil.svg';
 
 interface ProfileEditValues {
   name: string;
@@ -19,12 +20,16 @@ const ProfileEditForm = () => {
 
   const { data: profile } = useQuery({
     queryKey: ['my-profile'],
-    queryFn: () => getProfile<MyProfileType>(session?.id),
+    queryFn: () => getProfile<ProfileType>(session?.id),
     enabled: !!session?.id,
   });
 
   const { control, setValue, handleSubmit } = useForm<ProfileEditValues>({
-    defaultValues: { name: '', email: '', introduction: '' },
+    defaultValues: {
+      name: '',
+      email: '',
+      introduction: '',
+    },
   });
 
   useEffect(() => {
@@ -34,6 +39,7 @@ const ProfileEditForm = () => {
     setValue('name', profile.name);
     setValue('email', profile.email);
     setValue('introduction', profile?.introduction ?? '');
+    setImageUrl(profile?.profileImagePath ?? '');
   }, [profile]);
 
   const queryClient = useQueryClient();
@@ -49,10 +55,32 @@ const ProfileEditForm = () => {
     },
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageFile, setImageFile] = useState<File>();
+  const [imageUrl, setImageUrl] = useState<string | null>('');
+
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImageUrl(reader.result as string);
+    };
+  };
+
   const handleUpdateProfile: SubmitHandler<ProfileEditValues> = (
     formValues,
   ) => {
-    updateProfileMutation.mutate({ introduction: formValues.introduction });
+    const imageFormData = new FormData();
+    imageFile && imageFormData.append('file', imageFile);
+    updateProfileMutation.mutate({
+      introduction: formValues.introduction,
+      file: imageFormData,
+    });
   };
 
   return (
@@ -61,8 +89,28 @@ const ProfileEditForm = () => {
       className='h-full w-full'
       noValidate
     >
-      <div className='flex h-300 w-full items-center justify-center '>
-        <img src={DefaultProfileImage} className='h-200 w-200 rounded-full' />
+      <div className='relative flex h-300 w-full items-center justify-center'>
+        <img
+          src={imageUrl || DefaultProfileImage}
+          className='h-200 w-200 rounded-full object-cover'
+        />
+        <button
+          type='button'
+          onClick={() => {
+            fileInputRef.current?.click();
+          }}
+          className='absolute right-132 top-60 flex h-32 w-32 cursor-pointer items-center justify-center rounded-full border border-gray-400 bg-gray-100'
+        >
+          <img src={Pencil} className='h-20 w-20 object-cover' />
+          <input
+            ref={fileInputRef}
+            type='file'
+            id='imageUpload'
+            accept='image/*'
+            onChange={handleFileSelect}
+            className='hidden'
+          />
+        </button>
       </div>
       <div className='flex w-full flex-col gap-16'>
         <InputContainer name='name' control={control} disabled>
