@@ -1,27 +1,30 @@
-export interface ProfileType {
-  name: string;
-  introduction?: string;
-  profileImagePath?: string;
-}
-
-export interface MyProfileType extends ProfileType {
-  email: string;
-}
-
 export interface UserType {
   id: number;
   name: string;
-  profileImage?: string;
+  profileImagePath?: string;
+}
+
+export interface ProfileType extends UserType {
+  email: string;
 }
 
 export interface ChattingRoomType {
-  user: UserType;
-  lastChat: string;
-  time: string;
+  id: number;
+  updatedAt: string;
 }
 
-export interface ChatType {
-  user: UserType;
-  value: string;
-  time: string;
+export interface FullChattingRoomType extends ChattingRoomType {
+  messages: MessageType[];
+}
+
+export interface MessageType {
+  id: number;
+  senderId: number;
+  content: string;
+  createdAt: string;
+}
+
+export interface FullMessageType extends MessageType {
+  sender: UserType;
+  chatRoom: ChattingRoomType;
 }

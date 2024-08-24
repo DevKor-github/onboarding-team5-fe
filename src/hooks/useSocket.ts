@@ -1,38 +1,68 @@
-import { useEffect } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
+import { FullChattingRoomType, FullMessageType } from 'types/client.types';
+import { getSession } from 'utils/handleSession';
 
-const socket = io(`ws://13.124.210.246:3000/?userId=7`, {
-  transports: ['websocket'],
-});
+interface SendMessageProps {
+  chatRoomId: number;
+  message: string;
+}
 
 const useSocket = () => {
-  const createChat = () => {
-    socket.emit('createChatRoom', { name: 'a', userIds: [7, 3] }, (value) => {
-      console.log('CREATE', value);
+  const session = getSession();
+  const [socket, setSocket] = useState<Socket>();
+
+  const initSocket = () => {
+    if (socket || !session) {
+      return;
+    }
+    const newSocket = io(`ws://13.124.210.246:3000/?userId=${session.id}`, {
+      transports: ['websocket'],
     });
+    setSocket(newSocket);
   };
 
-  const leaveChat = () => {
-    socket.emit('leaveChatRoom', { userId: 7, chatRoomId: 34 }, (value) => {
-      console.log('LEAVE', value);
-    });
+  useEffect(() => {
+    initSocket();
+    return () => {
+      socket?.disconnect();
+    };
+  }, []);
+
+  const createChat = (receiverId: number) => {
+    socket?.emit(
+      'createChatRoom',
+      { name: '', userIds: [session?.id, receiverId] },
+      (value: FullChattingRoomType) => {
+        console.log('CREATE', value);
+      },
+    );
   };
 
-  const sendMessage = () => {
-    socket.emit('sendMessage', {
-      chatRoomId: 34,
-      senderId: 7,
-      message: '안녕하세요',
+  const leaveChat = (chatRoomId: number) => {
+    socket?.emit('leaveChatRoom', { userId: session?.id, chatRoomId });
+  };
+
+  const sendMessage = ({ chatRoomId, message }: SendMessageProps) => {
+    socket?.emit('sendMessage', {
+      chatRoomId,
+      senderId: session?.id,
+      message,
     });
   };
 
   useEffect(() => {
-    socket.on('messageReceived', (value) => console.log(value));
+    if (!socket) {
+      return;
+    }
+    socket.on('messageReceived', (value: FullMessageType) =>
+      console.log(value),
+    );
 
     return () => {
       socket.off('messageReceived');
     };
-  }, []);
+  }, [socket]);
   return { createChat, leaveChat, sendMessage };
 };
 

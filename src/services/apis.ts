@@ -1,4 +1,4 @@
-import { MyProfileType, ProfileType } from 'types/client.types';
+import { ProfileType, UserType } from 'types/client.types';
 import { instance } from './config/default';
 
 const TEST_ACCOUNT = {
@@ -17,7 +17,7 @@ export const signInUser = async () => {
   };
 };
 
-export const getProfile = async <T extends ProfileType | MyProfileType>(
+export const getProfile = async <T extends UserType | ProfileType>(
   id: number | null | undefined,
 ) => {
   if (!id) {
