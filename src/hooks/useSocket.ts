@@ -11,6 +11,7 @@ const useSocket = () => {
   const session = getSession();
   const [chattingRoomId, setChattingRoomId] = useState<number | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [newMessage, setNewMessage] = useState<MessageType | null>(null);
 
   const createChat = (receiverId: number | undefined) => {
     if (!receiverId || !socket) {
@@ -20,7 +21,6 @@ const useSocket = () => {
       'createChatRoom',
       { name: '', userIds: [session?.id, receiverId] },
       (value: FullChattingRoomType) => {
-        console.log(value);
         setMessages(value.messages ?? []);
         setChattingRoomId(value.id);
       },
@@ -46,14 +46,25 @@ const useSocket = () => {
       return;
     }
     socket.on('messageReceived', (value: FullMessageType) => {
-      setMessages((prev) => [...prev, value]);
-      console.log('SEND: ', value);
+      setNewMessage(value);
     });
 
     return () => {
       socket?.off('messageReceived');
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (!newMessage) {
+      return;
+    }
+    if (newMessage.chatRoomId !== chattingRoomId) {
+      setNewMessage(null);
+      return;
+    }
+    setMessages((prev) => [...prev, newMessage]);
+    setNewMessage(null);
+  }, [newMessage]);
 
   return {
     createChat,

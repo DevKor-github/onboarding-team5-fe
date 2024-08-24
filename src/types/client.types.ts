@@ -21,6 +21,7 @@ export interface FullChattingRoomType extends ChattingRoomType {
 
 export interface MessageType {
   id: number;
+  chatRoomId: number;
   senderId: number;
   content: string;
   createdAt: string;
