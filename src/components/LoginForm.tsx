@@ -21,8 +21,8 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (session) {
-      toast.success('이미 로그인되어 있습니다.');
-      return ;
+      navigate('/');
+      return;
     }
   }, [session]);
 
@@ -36,14 +36,14 @@ const LoginForm = () => {
 
     setIsLoading(true);
     try {
-      const response = await signInUser();
+      const response = await signInUser({ email, password });
       setSession({
         accessToken: response.accessToken,
         refreshToken: response.refreshToken,
         id: response.id,
       });
       toast.success('로그인에 성공했습니다!');
-      navigate('/')
+      navigate('/');
     } catch (error) {
       toast.error('로그인에 실패했습니다. \n 이메일과 비밀번호를 확인하세요.');
     } finally {
@@ -85,6 +85,7 @@ const LoginForm = () => {
                       textColor='text-[#3D3D3D]'
                       height='h-[51px]'
                       width='w-[155px]'
+                      type='button'
                       onClick={toSignUp}
                     />
                   </div>

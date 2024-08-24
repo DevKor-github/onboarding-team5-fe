@@ -24,8 +24,6 @@ const ProfileEditForm = () => {
     enabled: !!session?.id,
   });
 
-  console.log(profile);
-
   const { control, setValue, handleSubmit } = useForm<ProfileEditValues>({
     defaultValues: {
       name: '',

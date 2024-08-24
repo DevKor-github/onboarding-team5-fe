@@ -1,13 +1,23 @@
 import { ProfileType, UserType } from 'types/client.types';
 import { instance } from './config/default';
 
-const TEST_ACCOUNT = {
-  email: 'test@gmail.com',
-  password: 'asdf1234',
+export const signInUser = async (body: { email: string; password: string }) => {
+  const res = await instance.post('/auth/login', body);
+  const data: { accessToken: string; refreshToken: string; myId: number } =
+    res.data;
+  return {
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+    id: data.myId,
+  };
 };
 
-export const signInUser = async () => {
-  const res = await instance.post('/auth/login', TEST_ACCOUNT);
+export const signUpUser = async (body: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  const res = await instance.post('/auth/signup', body);
   const data: { accessToken: string; refreshToken: string; myId: number } =
     res.data;
   return {

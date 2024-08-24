@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setSession } from 'utils/handleSession';
 import toast from 'react-hot-toast';
+import { signInUser, signUpUser } from 'services/apis';
 
 const SignUpForm = () => {
   const [name, setName] = useState('');
@@ -16,20 +17,15 @@ const SignUpForm = () => {
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/auth/signup', { name, email, password });
-      
-      setSession({
-        accessToken: response.data.accessToken,
-        refreshToken: response.data.refreshToken,
-        id: response.data.myId,
-        
-      });
-      
+      await signUpUser({ name, email, password });
+      const session = await signInUser({ email, password });
+
+      setSession(session);
 
       navigate('/profile_set');
     } catch (error) {
       console.error('회원가입 실패:', error);
-      toast.error('회원가입에 실패했습니다. \n 다시 시도해 주세요.')
+      toast.error('회원가입에 실패했습니다. \n 다시 시도해 주세요.');
     }
   };
 
@@ -49,13 +45,30 @@ const SignUpForm = () => {
           <form method='POST' className='' onSubmit={handleSignUp}>
             <div className='px-[34px]'>
               <div className='pt-[20px]'>
-                <Input placeholder='이름' value={name} onChange={(e) => setName(e.target.value)} required />
+                <Input
+                  placeholder='이름'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </div>
               <div className='pt-[15px]'>
-                <Input placeholder='이메일' type='email' value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <Input
+                  placeholder='이메일'
+                  type='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
               <div className='pt-[15px]'>
-                <Input placeholder='비밀번호' type='password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <Input
+                  placeholder='비밀번호'
+                  type='password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </div>
             </div>
             <div className='relative top-[80px] flex justify-center'>

@@ -1,21 +1,17 @@
-import axios from 'axios';
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
-import Input from './Input';
-import { getSession } from 'utils/handleSession';
-import { ProfileType } from 'types/client.types';
 import toast from 'react-hot-toast';
+import { updateProfile } from 'services/apis';
 
 const ProfileSetForm = () => {
-  const session = getSession();
   const navigate = useNavigate();
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [nickname, setNickname] = useState('');
   const [intro, setIntro] = useState('');
   const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [file, setFile] = useState<File>();
 
   // 프로필 이미지 업로드 처리
   const handleFileUploadClick = () => {
@@ -27,6 +23,7 @@ const ProfileSetForm = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfilePic(reader.result as string);
@@ -38,21 +35,14 @@ const ProfileSetForm = () => {
   // 프로필 정보 제출 처리
   const handleSubmit = async () => {
     try {
-      // 프로필 정보를 서버에 전송
-      const profileData: ProfileType = {
-        name: nickname,
+      const imageFormData = new FormData();
+      file && imageFormData.append('file', file);
+      updateProfile({
         introduction: intro,
-        profileImagePath: profilePic || '',
-      };
-
-      await axios.post('/api/profile', profileData, {
-        headers: {
-          Authorization: `Bearer ${session?.accessToken}`,
-        },
+        file: imageFormData,
       });
 
-      // 프로필 설정 후 /profile 페이지로 이동
-      navigate('/profile', { state: { profile: profileData } });
+      navigate('/');
     } catch (error) {
       console.error('프로필 생성 실패:', error);
       toast.error('프로필 생성 실패');
@@ -106,16 +96,6 @@ const ProfileSetForm = () => {
       </div>
 
       <div className='relative top-24'>
-        <div className='flex justify-center gap-[10px] '>
-          <div>
-            <Input
-              placeholder='name'
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-            />
-          </div>
-        </div>
-
         <div className='pt-[26px]'>
           <label className='text-sm font-medium block pl-24 pt-20 leading-6 text-gray-900'>
             한 줄 소개
