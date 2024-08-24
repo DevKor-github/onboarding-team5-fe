@@ -1,6 +1,7 @@
 export interface UserType {
   id: number;
   name: string;
+  introduction?: string;
   profileImagePath?: string;
 }
 

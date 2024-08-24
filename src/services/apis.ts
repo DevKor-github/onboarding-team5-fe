@@ -17,6 +17,12 @@ export const signInUser = async () => {
   };
 };
 
+export const getUsers = async () => {
+  const res = await instance.get('/user');
+  const data: UserType[] = res.data;
+  return data;
+};
+
 export const getProfile = async <T extends UserType | ProfileType>(
   id: number | null | undefined,
 ) => {
@@ -36,7 +42,7 @@ export const updateProfile = async (body: {
   return res;
 };
 
-export const getChatting = async () => {
+export const getChattingRoom = async () => {
   const res = await instance.get(`/chat/list`);
   const data = res.data;
   return data;
