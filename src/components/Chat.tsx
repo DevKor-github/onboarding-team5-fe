@@ -1,19 +1,20 @@
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
-import { ChatType } from 'types/client.types';
 import BubbleTip from 'assets/icons/bubble-tip.svg';
 import MyBubbleTip from 'assets/icons/my-bubble-tip.svg';
+import { MessageType, UserType } from 'types/client.types';
 
 interface Props {
-  chat: ChatType;
+  message: MessageType;
+  receiver: UserType | undefined;
   isMyChat: boolean;
   isRepeated: boolean;
 }
 
-const Chat = ({ chat, isMyChat, isRepeated }: Props) => {
+const Chat = ({ message, receiver, isMyChat, isRepeated }: Props) => {
   return (
     <>
       {isMyChat ? (
-        <MyBubble chat={chat} isRepeated={isRepeated} />
+        <MyBubble message={message} isRepeated={isRepeated} />
       ) : (
         <div className='flex w-full gap-20'>
           {isRepeated ? (
@@ -21,12 +22,16 @@ const Chat = ({ chat, isMyChat, isRepeated }: Props) => {
           ) : (
             <button className='h-32 w-32 overflow-hidden rounded-full'>
               <img
-                src={chat.user.profileImage ?? DefaultProfileImage}
+                src={receiver?.profileImagePath ?? DefaultProfileImage}
                 className='h-full w-full object-cover'
               />
             </button>
           )}
-          <Bubble chat={chat} isRepeated={isRepeated} />
+          <Bubble
+            message={message}
+            receiver={receiver}
+            isRepeated={isRepeated}
+          />
         </div>
       )}
     </>
@@ -35,30 +40,38 @@ const Chat = ({ chat, isMyChat, isRepeated }: Props) => {
 
 export default Chat;
 
-const Bubble = ({ chat, isRepeated }: Omit<Props, 'isMyChat'>) => {
+interface BubbleProps {
+  message: MessageType;
+  receiver: UserType | undefined;
+  isRepeated: boolean;
+}
+
+const Bubble = ({ message, receiver, isRepeated }: BubbleProps) => {
   return (
     <div className='relative min-w-96 max-w-256'>
       {!isRepeated && <img src={BubbleTip} className='absolute -left-8' />}
       <div
         className={`flex w-full flex-col gap-4 rounded-[6px] bg-[#F2F2F7] px-8 py-4 ${isRepeated ? '' : 'rounded-tl-none'}`}
       >
-        <div className='font-600'>{chat.user.name}</div>
-        <div>{chat.value}</div>
-        <div className='text-right text-12 text-[#666668]'>{chat.time}</div>
+        <div className='font-600'>{receiver?.name}</div>
+        <div>{message.content}</div>
+        <div className='text-right text-12 text-[#666668]'>
+          {message.createdAt}
+        </div>
       </div>
     </div>
   );
 };
 
-const MyBubble = ({ chat, isRepeated }: Omit<Props, 'isMyChat'>) => {
+const MyBubble = ({ message, isRepeated }: Omit<BubbleProps, 'receiver'>) => {
   return (
     <div className='relative ml-auto mr-8 min-w-96 max-w-256'>
       {!isRepeated && <img src={MyBubbleTip} className='absolute -right-8' />}
       <div
         className={`flex w-full flex-col gap-4 rounded-[6px] bg-[#3189F0] px-8 py-4 text-white ${isRepeated ? '' : 'rounded-tr-none'}`}
       >
-        <div>{chat.value}</div>
-        <div className='text-right text-12'>{chat.time}</div>
+        <div>{message.content}</div>
+        <div className='text-right text-12'>{message.createdAt}</div>
       </div>
     </div>
   );

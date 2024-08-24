@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { FullChattingRoomType, FullMessageType } from 'types/client.types';
+import {
+  FullChattingRoomType,
+  FullMessageType,
+  MessageType,
+} from 'types/client.types';
 import { getSession } from 'utils/handleSession';
-
-interface SendMessageProps {
-  chatRoomId: number;
-  message: string;
-}
 
 const useSocket = () => {
   const session = getSession();
@@ -29,25 +28,34 @@ const useSocket = () => {
     };
   }, []);
 
-  const createChat = (receiverId: number) => {
+  const [chattingRoomId, setChattingRoomId] = useState<number | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
+  const createChat = (receiverId: number | undefined) => {
+    if (!receiverId || !socket) {
+      return;
+    }
     socket?.emit(
       'createChatRoom',
       { name: '', userIds: [session?.id, receiverId] },
       (value: FullChattingRoomType) => {
-        console.log('CREATE', value);
+        setMessages(value.messages);
+        setChattingRoomId(value.id);
       },
     );
   };
 
   const leaveChat = (chatRoomId: number) => {
     socket?.emit('leaveChatRoom', { userId: session?.id, chatRoomId });
+    setChattingRoomId(null);
+    setMessages([]);
   };
 
-  const sendMessage = ({ chatRoomId, message }: SendMessageProps) => {
+  const sendMessage = (value: string) => {
     socket?.emit('sendMessage', {
-      chatRoomId,
+      chatRoomId: chattingRoomId,
       senderId: session?.id,
-      message,
+      message: value,
     });
   };
 
@@ -55,15 +63,21 @@ const useSocket = () => {
     if (!socket) {
       return;
     }
-    socket.on('messageReceived', (value: FullMessageType) =>
-      console.log(value),
-    );
+    socket.on('messageReceived', (value: FullMessageType) => {
+      setMessages((prev) => [...prev, value]);
+    });
 
     return () => {
       socket.off('messageReceived');
     };
   }, [socket]);
-  return { createChat, leaveChat, sendMessage };
+  return {
+    createChat,
+    leaveChat,
+    sendMessage,
+    isConnected: !!socket,
+    messages,
+  };
 };
 
 export default useSocket;
