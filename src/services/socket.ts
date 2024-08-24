@@ -3,6 +3,9 @@ import { getSession } from 'utils/handleSession';
 
 const session = getSession();
 
-export const socket = io(`ws://13.124.210.246:3000/?userId=${session?.id}`, {
-  transports: ['websocket'],
-});
+export const socket = io(
+  `${import.meta.env.VITE_SOCKET_URL}/?userId=${session?.id}`,
+  {
+    transports: ['websocket'],
+  },
+);
