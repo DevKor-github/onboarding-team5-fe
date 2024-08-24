@@ -27,6 +27,8 @@ const ListPage = () => {
     return true;
   });
 
+  console.log(chattingRoom, users);
+
   return (
     <>
       <Header />

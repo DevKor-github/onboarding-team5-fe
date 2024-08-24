@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { socket } from 'services/socket';
 import {
   FullChattingRoomType,
   FullMessageType,
@@ -9,25 +9,6 @@ import { getSession } from 'utils/handleSession';
 
 const useSocket = () => {
   const session = getSession();
-  const [socket, setSocket] = useState<Socket>();
-
-  const initSocket = () => {
-    if (socket || !session) {
-      return;
-    }
-    const newSocket = io(`ws://13.124.210.246:3000/?userId=${session.id}`, {
-      transports: ['websocket'],
-    });
-    setSocket(newSocket);
-  };
-
-  useEffect(() => {
-    initSocket();
-    return () => {
-      socket?.disconnect();
-    };
-  }, []);
-
   const [chattingRoomId, setChattingRoomId] = useState<number | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
 
@@ -39,7 +20,7 @@ const useSocket = () => {
       'createChatRoom',
       { name: '', userIds: [session?.id, receiverId] },
       (value: FullChattingRoomType) => {
-        setMessages(value.messages);
+        setMessages(value.messages ?? []);
         setChattingRoomId(value.id);
       },
     );
@@ -68,9 +49,10 @@ const useSocket = () => {
     });
 
     return () => {
-      socket.off('messageReceived');
+      socket?.off('messageReceived');
     };
   }, [socket]);
+
   return {
     createChat,
     leaveChat,

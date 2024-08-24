@@ -21,12 +21,15 @@ const ChatPage = () => {
   const session = getSession();
 
   const { createChat, sendMessage, isConnected, messages } = useSocket();
+  const isCreated = useRef(false);
 
   useEffect(() => {
-    if (!isConnected) {
+    // console.log(isConnected, messages);
+    if (!isConnected || isCreated.current) {
       return;
     }
     createChat(Number(userId));
+    isCreated.current = true;
   }, [userId, isConnected]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
