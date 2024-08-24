@@ -3,8 +3,9 @@ import Chat from 'components/Chat';
 import ChatInput from 'components/ChatInput';
 import ChatHeader from 'components/headers/ChatHeader';
 import Header from 'components/headers/Header';
+import ProfileModal from 'components/modal/ProfileModal';
 import useSocket from 'hooks/useSocket';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getProfile } from 'services/apis';
 import { UserType } from 'types/client.types';
@@ -40,6 +41,8 @@ const ChatPage = () => {
     scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [scrollRef.current, messages]);
 
+  const [profileModal, setProfileModal] = useState(false);
+
   return (
     <>
       <Header />
@@ -55,12 +58,19 @@ const ChatPage = () => {
               message={message}
               receiver={receiverProfile}
               isMyChat={session?.id === message.senderId}
-              isRepeated={session?.id === messages[index - 1]?.senderId}
+              isRepeated={message.senderId === messages[index - 1]?.senderId}
+              openModal={() => setProfileModal(true)}
             />
           ))}
         </div>
         <ChatInput handleSendChat={sendMessage} />
       </div>
+      {profileModal && (
+        <ProfileModal
+          profile={receiverProfile}
+          closeModal={() => setProfileModal(false)}
+        />
+      )}
     </>
   );
 };

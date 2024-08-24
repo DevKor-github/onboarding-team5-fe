@@ -9,9 +9,16 @@ interface Props {
   receiver: UserType | undefined;
   isMyChat: boolean;
   isRepeated: boolean;
+  openModal: () => void;
 }
 
-const Chat = ({ message, receiver, isMyChat, isRepeated }: Props) => {
+const Chat = ({
+  message,
+  receiver,
+  isMyChat,
+  isRepeated,
+  openModal,
+}: Props) => {
   return (
     <>
       {isMyChat ? (
@@ -21,7 +28,10 @@ const Chat = ({ message, receiver, isMyChat, isRepeated }: Props) => {
           {isRepeated ? (
             <div className='w-32' />
           ) : (
-            <button className='h-32 w-32 overflow-hidden rounded-full'>
+            <button
+              onClick={openModal}
+              className='h-32 w-32 overflow-hidden rounded-full'
+            >
               <img
                 src={receiver?.profileImagePath ?? DefaultProfileImage}
                 className='h-full w-full object-cover'
