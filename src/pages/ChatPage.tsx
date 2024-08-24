@@ -24,7 +24,6 @@ const ChatPage = () => {
   const isCreated = useRef(false);
 
   useEffect(() => {
-    // console.log(isConnected, messages);
     if (!isConnected || isCreated.current) {
       return;
     }

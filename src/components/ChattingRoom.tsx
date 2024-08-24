@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { UserType } from 'types/client.types';
 import DefaultProfileImage from 'assets/images/default-profile.jpg';
+import { parseDate } from 'utils/parseDate';
 
 interface Props {
   user?: UserType;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 const ChattingRoom = ({ user, latestMessage, updatedAt }: Props) => {
+  const parsedDate = parseDate(updatedAt);
   return (
     <Link
       to={`/${user?.id}`}
@@ -24,7 +26,7 @@ const ChattingRoom = ({ user, latestMessage, updatedAt }: Props) => {
       <div className='line-clamp-1 w-60 grow px-12 text-12 text-gray-500'>
         {latestMessage}
       </div>
-      <div className='text-12'>{updatedAt}</div>
+      <div className='text-12 text-gray-500'>{parsedDate}</div>
     </Link>
   );
 };

@@ -46,9 +46,8 @@ export const getChattingRoom = async () => {
   const res = await instance.get(`/chat/list`);
   const data: {
     id: number;
-    latestMessage: { content: string; senderId: number };
+    latestMessage: { content: string; senderId: number; createdAt: string };
     name: string;
-    updatedAt: string;
     usersInfo: { id: number; name: string }[];
   }[] = res.data;
   return data;

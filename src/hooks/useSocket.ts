@@ -20,6 +20,7 @@ const useSocket = () => {
       'createChatRoom',
       { name: '', userIds: [session?.id, receiverId] },
       (value: FullChattingRoomType) => {
+        console.log(value);
         setMessages(value.messages ?? []);
         setChattingRoomId(value.id);
       },
@@ -46,6 +47,7 @@ const useSocket = () => {
     }
     socket.on('messageReceived', (value: FullMessageType) => {
       setMessages((prev) => [...prev, value]);
+      console.log('SEND: ', value);
     });
 
     return () => {

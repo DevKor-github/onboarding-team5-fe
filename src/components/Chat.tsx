@@ -2,6 +2,7 @@ import DefaultProfileImage from 'assets/images/default-profile.jpg';
 import BubbleTip from 'assets/icons/bubble-tip.svg';
 import MyBubbleTip from 'assets/icons/my-bubble-tip.svg';
 import { MessageType, UserType } from 'types/client.types';
+import { parseDate } from 'utils/parseDate';
 
 interface Props {
   message: MessageType;
@@ -47,6 +48,7 @@ interface BubbleProps {
 }
 
 const Bubble = ({ message, receiver, isRepeated }: BubbleProps) => {
+  const parsedDate = parseDate(message.createdAt);
   return (
     <div className='relative min-w-96 max-w-256'>
       {!isRepeated && <img src={BubbleTip} className='absolute -left-8' />}
@@ -55,15 +57,14 @@ const Bubble = ({ message, receiver, isRepeated }: BubbleProps) => {
       >
         <div className='font-600'>{receiver?.name}</div>
         <div>{message.content}</div>
-        <div className='text-right text-12 text-[#666668]'>
-          {message.createdAt}
-        </div>
+        <div className='text-right text-12 text-[#666668]'>{parsedDate}</div>
       </div>
     </div>
   );
 };
 
 const MyBubble = ({ message, isRepeated }: Omit<BubbleProps, 'receiver'>) => {
+  const parsedDate = parseDate(message.createdAt);
   return (
     <div className='relative ml-auto mr-8 min-w-96 max-w-256'>
       {!isRepeated && <img src={MyBubbleTip} className='absolute -right-8' />}
@@ -71,7 +72,7 @@ const MyBubble = ({ message, isRepeated }: Omit<BubbleProps, 'receiver'>) => {
         className={`flex w-full flex-col gap-4 rounded-[6px] bg-[#3189F0] px-8 py-4 text-white ${isRepeated ? '' : 'rounded-tr-none'}`}
       >
         <div>{message.content}</div>
-        <div className='text-right text-12'>{message.createdAt}</div>
+        <div className='text-right text-12'>{parsedDate}</div>
       </div>
     </div>
   );

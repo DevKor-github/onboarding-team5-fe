@@ -11,6 +11,7 @@ export interface ProfileType extends UserType {
 
 export interface ChattingRoomType {
   id: number;
+  createdAt: string;
   updatedAt: string;
 }
 
