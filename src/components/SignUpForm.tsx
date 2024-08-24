@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Button from './Button';
 import Input from './Input';
 import { useState } from 'react';

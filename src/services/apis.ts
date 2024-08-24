@@ -48,11 +48,11 @@ export const updateProfile = async (body: {
   introduction?: string;
   file?: FormData;
 }) => {
-  const resImage = await instance.patch('/user/update-profile', body.file);
-  const resIntro = await instance.patch('/user/update-profile', {
+  await instance.patch('/user/update-profile', body.file);
+  const res = await instance.patch('/user/update-profile', {
     introduction: body.introduction,
   });
-  return resIntro;
+  return res;
 };
 
 export const getChattingRoom = async () => {
