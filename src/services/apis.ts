@@ -36,10 +36,13 @@ export const getProfile = async <T extends UserType | ProfileType>(
 
 export const updateProfile = async (body: {
   introduction?: string;
-  profileImagePath?: string;
+  file?: FormData;
 }) => {
-  const res = await instance.patch('/user/update-profile', body);
-  return res;
+  const resImage = await instance.patch('/user/update-profile', body.file);
+  const resIntro = await instance.patch('/user/update-profile', {
+    introduction: body.introduction,
+  });
+  return resIntro;
 };
 
 export const getChattingRoom = async () => {

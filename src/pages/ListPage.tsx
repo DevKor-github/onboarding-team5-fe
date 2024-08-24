@@ -33,8 +33,6 @@ const ListPage = () => {
       new Date(a.latestMessage.createdAt).getTime(),
   );
 
-  console.log(chattingRoom);
-
   return (
     <>
       <Header />
