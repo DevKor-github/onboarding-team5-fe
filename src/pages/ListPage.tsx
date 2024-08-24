@@ -3,8 +3,11 @@ import ChattingRoom from 'components/ChattingRoom';
 import Header from 'components/headers/Header';
 import ListHeader from 'components/headers/ListHeader';
 import { getChattingRoom, getUsers } from 'services/apis';
+import { getSession } from 'utils/handleSession';
 
 const ListPage = () => {
+  const session = getSession();
+
   const { data: users } = useQuery({
     queryKey: ['users'],
     queryFn: getUsers,
@@ -13,7 +16,16 @@ const ListPage = () => {
     queryKey: ['chattingRoom'],
     queryFn: getChattingRoom,
   });
-  console.log(chattingRoom, users);
+
+  const filteredUsers = users?.filter((user) => {
+    if (
+      user.id === session?.id ||
+      chattingRoom?.find((room) => room.usersInfo.find((e) => e.id === user.id))
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <>
@@ -21,7 +33,17 @@ const ListPage = () => {
       <ListHeader />
       <div className='flex h-[calc(100dvh-108px)] w-full flex-col gap-12 overflow-scroll py-8'>
         <div className='h-[10px] w-full border-y border-[#F5F5F5] bg-[#FAFAFA]' />
-        {users?.map((user) => <ChattingRoom key={user.id} user={user} />)}
+        {chattingRoom?.map((room) => (
+          <ChattingRoom
+            key={room.id}
+            user={room.usersInfo.find((e) => e.id !== session?.id)}
+            latestMessage={room.latestMessage.content}
+            updatedAt={room.updatedAt}
+          />
+        ))}
+        {filteredUsers?.map((user) => (
+          <ChattingRoom key={user.id} user={user} />
+        ))}
       </div>
     </>
   );
