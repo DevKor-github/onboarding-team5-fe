@@ -17,7 +17,6 @@ const LoginForm = () => {
   const session = getSession();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -34,7 +33,6 @@ const LoginForm = () => {
       return;
     }
 
-    setIsLoading(true);
     try {
       const response = await signInUser({ email, password });
       setSession({
@@ -46,8 +44,6 @@ const LoginForm = () => {
       navigate('/');
     } catch (error) {
       toast.error('로그인에 실패했습니다. \n 이메일과 비밀번호를 확인하세요.');
-    } finally {
-      setIsLoading(false);
     }
   };
 
