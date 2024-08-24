@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { setSession } from 'utils/handleSession';
 import toast from 'react-hot-toast';
 import { signInUser, signUpUser } from 'services/apis';
+import Logo from 'assets/images/Vector.jpg';
 
 const SignUpForm = () => {
   const [name, setName] = useState('');
@@ -31,7 +32,7 @@ const SignUpForm = () => {
   return (
     <div>
       <div className='absolute top-[253px] flex pl-[71px]'>
-        <img src='src\assets\images\Vector.jpg' className='h-[51px] pr-[6px]' />
+        <img src={Logo} className='h-[51px] pr-[6px]' />
         <div className='h-48 w-[176px] text-center font-sans text-[39px] font-[700] text-[#505156]'>
           DEVKOR
         </div>

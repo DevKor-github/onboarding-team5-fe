@@ -1,11 +1,12 @@
 import Page from 'components/Page';
 import LoginForm from 'components/LoginForm';
+import Logo from 'assets/images/Vector.jpg';
 
 const Login = () => {
   return (
     <Page>
       <div className='absolute top-[253px] flex pl-[71px]'>
-        <img src='src\assets\images\Vector.jpg' className='h-[51px] pr-[6px]' />
+        <img src={Logo} className='h-[51px] pr-[6px]' />
         <div className='h-48 w-[176px] text-center font-sans text-[39px] font-[700] text-[#505156] '>
           DEVKOR
         </div>

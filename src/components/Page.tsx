@@ -1,17 +1,15 @@
 import { ReactNode } from 'react';
 
 interface Props {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 const Page = ({ children }: Props) => {
-    return (
-        <section>
-        <div className='mx-auto h-[798px] w-[393px] bg-white'>
-            {children}
-        </div>
-        </section>
-    );
+  return (
+    <section>
+      <div className='mx-auto h-[798px] w-[393px] bg-white'>{children}</div>
+    </section>
+  );
 };
 
 export default Page;
