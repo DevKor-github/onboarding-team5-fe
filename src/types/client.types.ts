@@ -15,10 +15,6 @@ export interface ChattingRoomType {
   updatedAt: string;
 }
 
-export interface FullChattingRoomType extends ChattingRoomType {
-  messages: MessageType[];
-}
-
 export interface MessageType {
   id: number;
   chatRoomId: number;

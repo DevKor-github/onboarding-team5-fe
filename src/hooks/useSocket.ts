@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { getChatHistory } from 'services/apis';
 import { socket } from 'services/socket';
 import {
-  FullChattingRoomType,
+  ChattingRoomType,
   FullMessageType,
   MessageType,
 } from 'types/client.types';
@@ -20,12 +21,24 @@ const useSocket = () => {
     socket?.emit(
       'createChatRoom',
       { name: '', userIds: [session?.id, receiverId] },
-      (value: FullChattingRoomType) => {
-        setMessages(value.messages ?? []);
+      (value: ChattingRoomType) => {
         setChattingRoomId(value.id);
+        // console.log('CREATE: ', value);
       },
     );
   };
+
+  const initMessageHistory = async (id: number) => {
+    const messages = await getChatHistory(id);
+    setMessages(messages ?? []);
+  };
+
+  useEffect(() => {
+    if (!chattingRoomId) {
+      return;
+    }
+    initMessageHistory(chattingRoomId);
+  }, [chattingRoomId]);
 
   const leaveChat = (chatRoomId: number) => {
     socket?.emit('leaveChatRoom', { userId: session?.id, chatRoomId });
@@ -47,6 +60,7 @@ const useSocket = () => {
     }
     socket.on('messageReceived', (value: FullMessageType) => {
       setNewMessage(value);
+      // console.log('SEND: ', value);
     });
 
     return () => {

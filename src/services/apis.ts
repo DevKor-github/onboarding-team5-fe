@@ -1,4 +1,4 @@
-import { ProfileType, UserType } from 'types/client.types';
+import { MessageType, ProfileType, UserType } from 'types/client.types';
 import { instance } from './config/default';
 
 export const signInUser = async (body: { email: string; password: string }) => {
@@ -63,5 +63,11 @@ export const getChattingRoom = async () => {
     name: string;
     usersInfo: { id: number; name: string }[];
   }[] = res.data;
+  return data;
+};
+
+export const getChatHistory = async (chatRoomId: number) => {
+  const res = await instance.get(`/chat/history/${chatRoomId}`);
+  const data: MessageType[] = res.data;
   return data;
 };
