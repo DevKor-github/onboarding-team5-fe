@@ -12,10 +12,23 @@ const SignUpForm = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
+  // 비밀번호 유효성 검사
+
   const navigate = useNavigate();
+
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return passwordRegex.test(password);
+  };
 
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!validatePassword(password)) {
+      toast.error('비밀번호는 특수문자와 영어 조합으로 \n 8자 이상이어야 합니다.');
+      return;
+    }
     try {
       await signUpUser({ name, email, password });
       const session = await signInUser({ email, password });
